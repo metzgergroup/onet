@@ -37,3 +37,7 @@ Then create the `onet` database from within `psql`:
 ### 6. Copy to online database
 
     pg_restore --host=<endpoint> --port=<port> --username=<user> --dbname=onet --schema=public --no-owner --no-privileges --no-tablespaces --verbose onet.dump
+
+### Changes
+
+Download the accompanying O*NET Data Dictionary to identify if any file structure changes have taken place between database releases.
