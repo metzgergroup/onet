@@ -1,0 +1,49 @@
+image: registry.gitlab.com/metzger-group/docker-git-lfs:latest
+
+services:
+  - docker:dind
+
+stages:
+  - build
+  - test
+  - release
+
+variables:
+  TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+  RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+
+build:
+  stage: build
+  script:
+    - echo http://dl-3.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
+    - apk add --no-cache bash bash-doc bash-completion unzip sed
+    - git lfs pull
+    - unzip -j docker-scripts/*.zip -d docker-scripts
+    - bash fix_source_files.sh
+    - docker network create build_network
+    - docker volume create --name data
+    - docker run -d --name db --volume data:/var/lib/postgresql/data --volume $(pwd)/docker-scripts:/docker-entrypoint-initdb.d --env POSTGRES_DB=onet --network build_network postgres:9.5.4
+    - until docker run --rm --network build_network postgres:9.5.4 psql --host db --username postgres --dbname onet --command "select 1"; do sleep 1; done
+    - docker stop db
+    - mkdir backup
+    - docker run --rm --volume data:/data --volume $(pwd)/backup:/backup --network build_network debian:jessie bash -c "tar -cvpzf /backup/data.tar.gz -C /data . && echo 'Backup complete'"
+    - docker build --pull -t $TEST_IMAGE .
+    - docker push $TEST_IMAGE
+
+test:
+  stage: test
+  script:
+    - docker pull $TEST_IMAGE
+    - docker run --rm $TEST_IMAGE bash -c 'test -f $PGDATA/PG_VERSION'
+
+release:
+  stage: release
+  script:
+    - docker pull $TEST_IMAGE
+    - docker tag $TEST_IMAGE $RELEASE_IMAGE
+    - docker push $RELEASE_IMAGE
+  only:
+    - tags
