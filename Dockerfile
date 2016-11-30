@@ -1,3 +1,3 @@
-FROM postgres:9.5.4
+FROM postgres:9.6.1-alpine
 
 ADD ./backup/data.tar.gz $PGDATA

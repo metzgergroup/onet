@@ -1,6 +1,6 @@
 # ONET Database
 
-This repo provides instructions to re-create the ONET database in a Docker image available at registry.gitlab.com/metzger-group/oes<tag>.
+This repo provides instructions to re-create the ONET database in a Docker image available at registry.gitlab.com/metzger-group/onet<tag>.
 
 The image is built, tagged, and pushed to the registry via a GitLab CI pipeline. In that pipeline, the database is created from the source data with the database files written into a Docker volume, then that volume is used to overwrite the default `PGDATA` directory in a new Postgres image. Source files are stored using the git large file service.
 
