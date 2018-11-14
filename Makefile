@@ -2,7 +2,7 @@ SHELL = /bin/bash
 IMAGE_NAME = 899239495551.dkr.ecr.us-east-2.amazonaws.com/onet
 SOURCE_DIR = docker-scripts
 PG_VERSION = latest
-ONET_VERSION = 23_0
+ONET_VERSION = 23_1
 
 .PHONY: download fix clean
 
