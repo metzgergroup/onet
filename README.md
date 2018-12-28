@@ -10,6 +10,6 @@ When a new database is released, download [the zipped source files](https://www.
 
 #### Note for local development
 
-Thsi requires the GNU version of `sed`, which can be installed on Mac OS X using Homebrew:
+This requires the GNU version of `sed`, which can be installed on Mac OS X using Homebrew:
 
     brew install gnu-sed --with-default-names
