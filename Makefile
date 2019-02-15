@@ -2,7 +2,7 @@ SHELL = /bin/bash
 IMAGE_NAME = 899239495551.dkr.ecr.us-east-2.amazonaws.com/onet
 SOURCE_DIR = docker-scripts
 PG_VERSION = latest
-ONET_VERSION = 23_1
+ONET_VERSION = 23_2
 
 .PHONY: download fix clean
 
@@ -35,4 +35,4 @@ push:
 	docker push $(IMAGE_NAME):$(ONET_VERSION)
 
 clean:
-	find ${SOURCE_DIR} -type f -not -name '*.zip' -delete
+	find ${SOURCE_DIR} -type f -not -name "${ONET_VERSION}.zip" -delete
