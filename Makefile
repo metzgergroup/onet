@@ -1,8 +1,8 @@
 SHELL = /bin/bash
-IMAGE_NAME = 899239495551.dkr.ecr.us-east-2.amazonaws.com/onet
+IMAGE_NAME = gcr.io/acat-shared/onet
 SOURCE_DIR = docker-scripts
 PG_VERSION = latest
-ONET_VERSION = 23_2
+ONET_VERSION = 23_3
 
 .PHONY: download fix clean
 
