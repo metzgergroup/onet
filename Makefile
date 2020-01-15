@@ -1,8 +1,8 @@
 SHELL = /bin/bash
 IMAGE_NAME = gcr.io/acat-shared/onet
 SOURCE_DIR = docker-scripts
-PG_VERSION = latest
-ONET_VERSION = 24_0
+PG_VERSION = 11.6
+ONET_VERSION = 24_1
 
 .PHONY: download fix clean
 
@@ -18,7 +18,7 @@ download:
 fix:
 	@echo "Change to unlogged tables for faster inserts and generalizing 'character varying(##)' data types to 'text'..."
 	for file in ${SOURCE_DIR}/*; do \
-	    if [[ $$file != *.zip ]]; then \
+	    if [[ $$file = *.sql ]]; then \
 	        sed -i 's/CREATE TABLE/CREATE UNLOGGED TABLE/Ig' $${file}; \
 	        sed -rn 's/CREATE UNLOGGED TABLE ([a-z_]+) \(/ALTER TABLE \1 SET LOGGED;/Igp' $${file} | tee -a $${file}; \
 	        sed -i 's/CHARACTER VARYING([0-9]*)/TEXT/Ig' $${file}; \
