@@ -2,7 +2,7 @@ SHELL = /bin/bash
 IMAGE_NAME = gcr.io/acat-shared/onet
 SOURCE_DIR = docker-scripts
 PG_VERSION = 11.7
-ONET_VERSION = 24_1
+ONET_VERSION = 24_2
 
 .PHONY: download fix clean
 
